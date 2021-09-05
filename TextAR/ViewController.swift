@@ -16,6 +16,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.sceneView = ARSCNView(frame: self.view.frame)
+        self.view.addSubview(self.sceneView)
+        
         // Set the view's delegate
         sceneView.delegate = self
         
@@ -23,7 +26,18 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.showsStatistics = true
         
         // Create a new scene
-        let scene = SCNScene(named: "art.scnassets/ship.scn")!
+        let scene = SCNScene()
+        
+        let textGeometry = SCNText(string: "Hello Swift", extrusionDepth: 1.0) //extrusionDepthで奥行き
+        textGeometry.firstMaterial?.diffuse.contents = UIColor.orange          //色指定
+        
+        let textNode = SCNNode(geometry: textGeometry)                         //
+        textNode.position = SCNVector3(0, 0.1, -0.6)                           //配置する座標を作る
+        textNode.scale = SCNVector3(0.02, 0.02, 0.02)                          //文字の大きさ
+        
+        scene.rootNode.addChildNode(textNode)                                  //ルートノードにテキストノードを紐づけシーンを表示させる
+        
+        
         
         // Set the scene to the view
         sceneView.scene = scene
